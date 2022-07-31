@@ -3,7 +3,7 @@
         {
             "Name": "iphone x screen/lcd",
             "ID": "10001",
-            "Cost": 179,
+            "Cost": 179.3,
             "Items": [
                 {
                     "ID": "10001",
@@ -25,7 +25,7 @@
         {
             "Name": "iphone 11 pro max screen/lcd",
             "ID": "10002",
-            "Cost": 399,
+            "Cost": 399.0,
             "Items": [
                 {
                     "ID": "10001",
@@ -47,7 +47,7 @@
         {
             "Name": "iphone 8+ screen/lcd",
             "ID": "10003",
-            "Cost": 99,
+            "Cost": 99.,
             "Items": [
                 {
                     "ID": "10001",
@@ -69,7 +69,7 @@
         {
             "Name": "ipad 10.2 (7th gen) glass",
             "ID": "10004",
-            "Cost": 169,
+            "Cost": 169.1,
             "Items": [
                 {
                     "ID": "10001",
