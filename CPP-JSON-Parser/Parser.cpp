@@ -1,17 +1,30 @@
 #include "Parser.h"
+#include "Tokenizer.h"
 
 namespace JSONparser {
 	void Parser::Parse(std::vector<Token>& tokens) {
+		mStart = tokens.begin();
 		mCurrent = tokens.begin();
 		mEnd = tokens.end();
 		int a = 0;
 		int b = 0;
-		while (mCurrent != mEnd) {
-			if (ExpectAssignment()) {
-				a++;
+		int c = 0;
+
+		while (mCurrent < mEnd) {
+			if (ExpectObject()) {
+				ParseObject();
 			}
 			else if (ExpectArray()) {
-				b++;
+				ParseArray();
+			}
+			else if (ExpectAssignment()) {
+				a++;
+				mCurrent -= 3;
+				std::string key = mCurrent->mText;
+				mCurrent += 2;
+				std::string value = mCurrent->mText;
+				mCurrent++;
+				std::cout << key << ": " << value << std::endl;
 			}
 			else {
 				++mCurrent;
@@ -19,6 +32,7 @@ namespace JSONparser {
 		}
 		std::cout << a << std::endl;
 		std::cout << b << std::endl;
+		std::cout << c << std::endl;
 	}
 
 	Token* Parser::ExpectOperator(const char* name) {
@@ -60,7 +74,6 @@ namespace JSONparser {
 	Token* Parser::ExpectAssignment() {
 		std::vector<Token>::iterator start = mCurrent;
 		if (ExpectKey() && (ExpectNumber() || ExpectString())) {
-			std::cout << "Found assignment" << std::endl;
 			Token returnToken = *mCurrent;
 			return &returnToken;
 		}
@@ -71,7 +84,6 @@ namespace JSONparser {
 	Token* Parser::ExpectArray() {
 		std::vector<Token>::iterator start = mCurrent;
 		if (ExpectKey() && ExpectOperator("[")) {
-			std::cout << "Found array" << std::endl;
 			Token returnToken = *mCurrent;
 			return &returnToken;
 		}
@@ -81,12 +93,71 @@ namespace JSONparser {
 
 	Token* Parser::ExpectObject() {
 		std::vector<Token>::iterator start = mCurrent;
-		if (ExpectKey() && ExpectOperator("{")) {
-			std::cout << "Found object" << std::endl;
+		if (ExpectOperator("{") || (ExpectKey() && ExpectOperator("{"))) {
 			Token returnToken = *mCurrent;
 			return &returnToken;
 		}
 		mCurrent = start;
 		return NULL;
+	}
+
+	void Parser::ParseAssignment() {
+		mCurrent -= 3;
+		std::string key = mCurrent->mText;
+		mCurrent += 2;
+		std::string value = mCurrent->mText;
+		mCurrent++;
+		std::cout << key << ": " << value << std::endl;
+	}
+
+	void Parser::ParseObject() {
+		std::cout << "{" << std::endl;
+		while (mCurrent < mEnd) {
+			if (ExpectOperator("}")) {
+				std::cout << "}" << std::endl;
+				break;
+			}
+			else if (ExpectObject()) {
+				ParseObject();
+			}
+			else if (ExpectArray()) {
+				ParseArray();
+			}
+			else if (ExpectAssignment()) {
+				ParseAssignment();
+			}
+			else {
+				++mCurrent;
+			}
+		}
+	}
+
+	void Parser::ParseArray() {
+		mCurrent -= 3;
+		std::cout << mCurrent->mText << ": [" << std::endl;
+		mCurrent += 3;
+
+		while (mCurrent < mEnd) {
+			if (ExpectOperator("}")) {
+				std::cout << "}" << std::endl;
+				break;
+			}
+			else if (ExpectOperator("]")) {
+				std::cout << "]" << std::endl;
+				break;
+			}
+			else if (ExpectObject()) {
+				ParseObject();
+			}
+			else if (ExpectArray()) {
+				ParseArray();
+			}
+			else if (ExpectAssignment()) {
+				ParseAssignment();
+			}
+			else {
+				++mCurrent;
+			}
+		}
 	}
 }

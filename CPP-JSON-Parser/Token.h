@@ -31,6 +31,7 @@ namespace JSONparser {
 		std::string mText;
 
 		Token();
+		Token(TOKEN_TYPES& type, const std::string& text);
 
 		void Display();
 	};

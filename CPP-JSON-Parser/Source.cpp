@@ -1,5 +1,6 @@
 #include "Tokenizer.h"
 #include "Parser.h"
+#include "Token.h"
 #include <iostream>
 #include <fstream>
 
@@ -24,6 +25,11 @@ int main() {
 	}
 
 	parser.Parse(tokens);
+	std::cout << parser.data.size() << std::endl;
+
+	for (auto const& pair : parser.data) {
+		std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+	}
 
 	system("pause");
 

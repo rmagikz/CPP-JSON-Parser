@@ -7,6 +7,7 @@
 #include <vector>
 #include <functional>
 #include <optional>
+#include <unordered_map>
 
 namespace JSONparser {
 	//static enum TYPES {
@@ -26,8 +27,11 @@ namespace JSONparser {
 
 		void Parse(std::vector<Token>& tokens);
 
+		std::vector<Token>::iterator mStart;
 		std::vector<Token>::iterator mCurrent;
 		std::vector<Token>::iterator mEnd;
+
+		std::unordered_map <std::string, std::string> data;
 
 		Token* ExpectOperator(const char* token);
 		Token* ExpectString();
@@ -36,5 +40,15 @@ namespace JSONparser {
 		Token* ExpectArray();
 		Token* ExpectObject();
 		Token* ExpectAssignment();
+		void ParseAssignment();
+		void ParseObject();
+		void ParseArray();
+	};
+
+	class JSONKeyValuePair {
+	public:
+		std::string key;
+		std::string value;
+		
 	};
 }
