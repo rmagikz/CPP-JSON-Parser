@@ -45,7 +45,6 @@ namespace JSONparser {
 					currentToken.mType = STRING;
 					currentToken.mText.append(1, currChar);
 				}
-				
 				break;
 			case ',':
 				if (currentToken.mType == INT || currentToken.mType == FLOAT) {
@@ -71,7 +70,6 @@ namespace JSONparser {
 				if (currentToken.mType == STRING) {
 					currentToken.mText.append(1, currChar);
 				}
-				break;
 			}
 		}
 

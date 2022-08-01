@@ -1,10 +1,12 @@
 #include "Tokenizer.h"
+#include "Parser.h"
 #include <iostream>
 #include <fstream>
 
 int main() {
 
 	JSONparser::Tokenizer tokenizer;
+	JSONparser::Parser parser;
 	
 	std::fstream inputFile;
 	std::string inputStream;
@@ -18,8 +20,10 @@ int main() {
 	std::vector<JSONparser::Token> tokens = tokenizer.Tokenize(inputStream);
 
 	for (JSONparser::Token token : tokens) {
-		token.Display();
+		//token.Display();
 	}
+
+	parser.Parse(tokens);
 
 	system("pause");
 
