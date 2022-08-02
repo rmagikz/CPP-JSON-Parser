@@ -6,9 +6,6 @@ namespace JSONparser {
 		mStart = tokens.begin();
 		mCurrent = tokens.begin();
 		mEnd = tokens.end();
-		int a = 0;
-		int b = 0;
-		int c = 0;
 
 		while (mCurrent < mEnd) {
 			if (ExpectObject()) {
@@ -18,7 +15,6 @@ namespace JSONparser {
 				ParseArray();
 			}
 			else if (ExpectAssignment()) {
-				a++;
 				mCurrent -= 3;
 				std::string key = mCurrent->mText;
 				mCurrent += 2;
@@ -30,9 +26,6 @@ namespace JSONparser {
 				++mCurrent;
 			}
 		}
-		std::cout << a << std::endl;
-		std::cout << b << std::endl;
-		std::cout << c << std::endl;
 	}
 
 	Token* Parser::ExpectOperator(const char* name) {
@@ -138,11 +131,7 @@ namespace JSONparser {
 		mCurrent += 3;
 
 		while (mCurrent < mEnd) {
-			if (ExpectOperator("}")) {
-				std::cout << "}" << std::endl;
-				break;
-			}
-			else if (ExpectOperator("]")) {
+			if (ExpectOperator("]")) {
 				std::cout << "]" << std::endl;
 				break;
 			}
