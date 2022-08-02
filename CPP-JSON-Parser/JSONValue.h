@@ -5,31 +5,43 @@
 #include <iostream>
 
 namespace JSONparser {
+
 	struct JSONValue {
-		static enum DATA_TYPE {
-			OBJECT, LIST, STRING, FLOAT, INT
-		};
+
+		using JSONList = std::vector<JSONValue>;
+		using JSONObject = std::unordered_map<std::string, JSONValue>;
+
+		static enum DATA_TYPES {
+			NOTHING, OBJECT, LIST, STRING, FLOAT, INT
+		} data_types;
 
 		union DATA {
-			std::unordered_map<std::string, JSONValue>* JSONObject;
-			std::vector<JSONValue>* JSONList;
+			JSONObject* JSONObject;
+			JSONList* JSONList;
 			std::string* JSONString;
 			float JSONFloat;
 			int JSONInt;
 		} mData;
 
-		DATA_TYPE mDataType;
+		bool isSet;
 
-		void SetObject(std::unordered_map<std::string, JSONValue>& data);
-		void SetList(std::vector<JSONValue>& data);
-		void SetString(std::string& data);
+		DATA_TYPES mDataType;
+
+		void SetObject(JSONObject* data);
+		void SetList(JSONList* data);
+		void SetString(std::string* data);
 		void SetFloat(float& data);
 		void SetInt(int& data);
 
-		std::unordered_map<std::string, JSONValue> GetObject();
-		std::vector<JSONValue> GetList();
+		JSONObject GetObject();
+		JSONList GetList();
 		std::string GetString();
 		float GetFloat();
 		int GetInt();
+
+		void Display();
 	};
+
+	using JSONList = std::vector<JSONValue>;
+	using JSONObject = std::unordered_map<std::string, JSONValue>;
 }

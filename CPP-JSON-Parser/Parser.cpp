@@ -1,152 +1,158 @@
 #include "Parser.h"
-#include "Tokenizer.h"
 
 namespace JSONparser {
-	void Parser::Parse(std::vector<Token>& tokens) {
+	JSONObject* Parser::Parse(std::vector<Token>& tokens) {
 		mStart = tokens.begin();
 		mCurrent = tokens.begin();
 		mEnd = tokens.end();
 
-		while (mCurrent < mEnd) {
-			if (ExpectObject()) {
-				ParseObject();
-			}
-			else if (ExpectArray()) {
-				ParseArray();
-			}
-			else if (ExpectAssignment()) {
-				mCurrent -= 3;
-				std::string key = mCurrent->mText;
-				mCurrent += 2;
-				std::string value = mCurrent->mText;
-				mCurrent++;
-				std::cout << key << ": " << value << std::endl;
-			}
-			else {
-				++mCurrent;
-			}
+		JSONObject* finalObject = new JSONObject;
+
+		if (ExpectObject()) {
+			JSONObject* object = ParseObject();
+			JSONValue value;
+			value.SetObject(object);
+			finalObject->emplace(std::make_pair("root", value));
 		}
+		
+		return finalObject;
 	}
 
-	Token* Parser::ExpectOperator(const char* name) {
-		if (mCurrent == mEnd) return NULL;
-		if (mCurrent->mType != OPERATOR) return NULL;
-		if (mCurrent->mText != name) return NULL;
+	bool Parser::ExpectOperator(const char* name) {
+		if (mCurrent == mEnd) return false;
+		if (mCurrent->mType != OPERATOR) return false;
+		if (mCurrent->mText != name) return false;
 
-		Token returnToken = *mCurrent;
 		++mCurrent;
-		return &returnToken;
+		return true;
 	}
 
-	Token* Parser::ExpectString() {
-		if (mCurrent == mEnd) return NULL;
-		if (mCurrent->mType != STRING) return NULL;
+	bool Parser::ExpectString() {
+		if (mCurrent == mEnd) return false;
+		if (mCurrent->mType != STRING) return false;
 
-		Token returnToken = *mCurrent;
 		++mCurrent;
-		return &returnToken;
+		return true;
 	}
 
-	Token* Parser::ExpectNumber() {
-		if (mCurrent == mEnd) return NULL;
-		if (mCurrent->mType != INT && mCurrent->mType != FLOAT) return NULL;
+	bool Parser::ExpectNumber() {
+		if (mCurrent == mEnd) return false;
+		if (mCurrent->mType != INT && mCurrent->mType != FLOAT) return false;
 
-		Token returnToken = *mCurrent;
 		++mCurrent;
-		return &returnToken;
+		return true;
 	}
 
-	Token* Parser::ExpectKey() {
+	bool Parser::ExpectKey() {
+		std::vector<Token>::iterator start = mCurrent;
 		if (ExpectString() && ExpectOperator(":")) {
-			Token returnToken = *mCurrent;
-			return &returnToken;
+			return true;
 		}
-		return NULL;
+		mCurrent = start;
+		return false;
 	}
 
-	Token* Parser::ExpectAssignment() {
+	bool Parser::ExpectAssignment() {
 		std::vector<Token>::iterator start = mCurrent;
 		if (ExpectKey() && (ExpectNumber() || ExpectString())) {
-			Token returnToken = *mCurrent;
-			return &returnToken;
+			return true;
 		}
 		mCurrent = start;
-		return NULL;
+		return false;
 	}
 
-	Token* Parser::ExpectArray() {
+	bool Parser::ExpectArray() {
 		std::vector<Token>::iterator start = mCurrent;
-		if (ExpectKey() && ExpectOperator("[")) {
-			Token returnToken = *mCurrent;
-			return &returnToken;
+		if ((ExpectKey() && ExpectOperator("[")) || ExpectOperator("[")) {
+			return true;
 		}
 		mCurrent = start;
-		return NULL;
+		return false;
 	}
 
-	Token* Parser::ExpectObject() {
+	bool Parser::ExpectObject() {
 		std::vector<Token>::iterator start = mCurrent;
-		if (ExpectOperator("{") || (ExpectKey() && ExpectOperator("{"))) {
-			Token returnToken = *mCurrent;
-			return &returnToken;
+		if ((ExpectKey() && ExpectOperator("{")) || ExpectOperator("{")) {
+			return true;
 		}
 		mCurrent = start;
-		return NULL;
+		return false;
 	}
 
-	void Parser::ParseAssignment() {
+	void Parser::ParseAssignment(JSONObject& currentObject) {
 		mCurrent -= 3;
 		std::string key = mCurrent->mText;
 		mCurrent += 2;
-		std::string value = mCurrent->mText;
+		JSONValue value;
+		value.SetString(&(mCurrent->mText));
 		mCurrent++;
-		std::cout << key << ": " << value << std::endl;
+		currentObject.emplace(std::make_pair(key, value));
 	}
 
-	void Parser::ParseObject() {
-		std::cout << "{" << std::endl;
+	JSONObject* Parser::ParseObject() {
+		JSONObject* currentObject = new JSONObject;
+
 		while (mCurrent < mEnd) {
 			if (ExpectOperator("}")) {
-				std::cout << "}" << std::endl;
 				break;
 			}
 			else if (ExpectObject()) {
-				ParseObject();
+				mCurrent -= 3;
+				std::string key = mCurrent->mText;
+				mCurrent += 3;
+				JSONObject* newObject = ParseObject();
+				JSONValue value;
+				value.SetObject(newObject);
+				currentObject->emplace(std::make_pair(key, value));
+				//delete(newObject);
 			}
 			else if (ExpectArray()) {
-				ParseArray();
+				mCurrent -= 3;
+				std::string key = mCurrent->mText;
+				mCurrent += 3;
+				JSONList* newArray = ParseArray();
+				JSONValue value;
+				value.SetList(newArray);
+				currentObject->emplace(std::make_pair(key, value));
+				//delete(newArray);
 			}
 			else if (ExpectAssignment()) {
-				ParseAssignment();
+				ParseAssignment(*currentObject);
 			}
 			else {
 				++mCurrent;
 			}
 		}
+		return currentObject;
 	}
 
-	void Parser::ParseArray() {
-		mCurrent -= 3;
-		std::cout << mCurrent->mText << ": [" << std::endl;
-		mCurrent += 3;
+	JSONList* Parser::ParseArray() {
+		JSONList* currentArray = new JSONList;
+		int bracketCount = 0;
 
 		while (mCurrent < mEnd) {
 			if (ExpectOperator("]")) {
-				std::cout << "]" << std::endl;
 				break;
 			}
 			else if (ExpectObject()) {
-				ParseObject();
+				JSONObject* newObject = ParseObject();
+				JSONValue value;
+				value.SetObject(newObject);
+				currentArray->emplace_back(value);
+				//delete(newObject);
 			}
 			else if (ExpectArray()) {
-				ParseArray();
-			}
-			else if (ExpectAssignment()) {
-				ParseAssignment();
+				JSONList* newArray = ParseArray();
+				JSONValue value;
+				value.SetList(newArray);
+				currentArray->emplace_back(value);
+				//delete(newArray);
 			}
 			else {
 				++mCurrent;
 			}
 		}
+		//std::cout << currentArray->size() << std::endl;
+		return currentArray;
 	}
 }

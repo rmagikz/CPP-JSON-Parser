@@ -1,8 +1,11 @@
 #include "Tokenizer.h"
 #include "Parser.h"
 #include "Token.h"
+#include "JSONValue.h"
 #include <iostream>
 #include <fstream>
+
+using namespace JSONparser;
 
 int main() {
 
@@ -20,16 +23,7 @@ int main() {
 
 	std::vector<JSONparser::Token> tokens = tokenizer.Tokenize(inputStream);
 
-	for (JSONparser::Token token : tokens) {
-		//token.Display();
-	}
-
-	parser.Parse(tokens);
-	std::cout << parser.data.size() << std::endl;
-
-	for (auto const& pair : parser.data) {
-		std::cout << "{" << pair.first << ": " << pair.second << "}\n";
-	}
+	JSONObject data = *parser.Parse(tokens);
 
 	system("pause");
 

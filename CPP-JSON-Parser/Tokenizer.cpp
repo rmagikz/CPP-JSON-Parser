@@ -38,12 +38,10 @@ namespace JSONparser {
 				break;
 			case '\"':
 				if (currentToken.mType == STRING) {
-					currentToken.mText.append(1, currChar);
 					CloseToken(currentToken);
 				}
 				else {
 					currentToken.mType = STRING;
-					currentToken.mText.append(1, currChar);
 				}
 				break;
 			case ',':
