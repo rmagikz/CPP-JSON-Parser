@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "Parser.h";
 
 namespace JSONparser {
 	JSONObject* Parser::Parse(std::vector<Token>& tokens) {
@@ -152,7 +152,6 @@ namespace JSONparser {
 				++mCurrent;
 			}
 		}
-		//std::cout << currentArray->size() << std::endl;
 		return currentArray;
 	}
 }

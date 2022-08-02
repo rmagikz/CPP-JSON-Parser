@@ -9,8 +9,8 @@ using namespace JSONparser;
 
 int main() {
 
-	JSONparser::Tokenizer tokenizer;
-	JSONparser::Parser parser;
+	Tokenizer tokenizer;
+	Parser parser;
 	
 	std::fstream inputFile;
 	std::string inputStream;
@@ -21,9 +21,15 @@ int main() {
 		inputStream.append(1, c);
 	}
 
-	std::vector<JSONparser::Token> tokens = tokenizer.Tokenize(inputStream);
-
+	std::vector<Token> tokens = tokenizer.Tokenize(inputStream);
 	JSONObject data = *parser.Parse(tokens);
+
+	std::string inv = data["root"].GetObject()["Inventory"].GetList()[0].GetObject()["Name"].GetString();
+
+	std::string inv1 = data["root"]["Inventory"][0]["Name"].GetString();
+
+	std::cout << inv << std::endl;
+	std::cout << inv1 << std::endl;
 
 	system("pause");
 

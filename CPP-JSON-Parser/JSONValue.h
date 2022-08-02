@@ -12,7 +12,7 @@ namespace JSONparser {
 		using JSONObject = std::unordered_map<std::string, JSONValue>;
 
 		static enum DATA_TYPES {
-			NOTHING, OBJECT, LIST, STRING, FLOAT, INT
+			OBJECT, LIST, STRING, FLOAT, INT
 		} data_types;
 
 		union DATA {
@@ -22,8 +22,6 @@ namespace JSONparser {
 			float JSONFloat;
 			int JSONInt;
 		} mData;
-
-		bool isSet;
 
 		DATA_TYPES mDataType;
 
@@ -39,7 +37,8 @@ namespace JSONparser {
 		float GetFloat();
 		int GetInt();
 
-		void Display();
+		JSONValue operator[](std::string key);
+		JSONValue operator[](int index);
 	};
 
 	using JSONList = std::vector<JSONValue>;

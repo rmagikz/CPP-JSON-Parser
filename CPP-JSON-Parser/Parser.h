@@ -22,9 +22,6 @@ namespace JSONparser {
 		std::vector<Token>::iterator mCurrent;
 		std::vector<Token>::iterator mEnd;
 
-		JSONValue jsonValue;
-		JSONValue current;
-
 		bool ExpectOperator(const char* token);
 		bool ExpectString();
 		bool ExpectNumber();
