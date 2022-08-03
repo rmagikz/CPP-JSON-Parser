@@ -48,10 +48,6 @@ namespace JSONparser {
 				if (currentToken.mType == INT || currentToken.mType == FLOAT) {
 					CloseToken(currentToken);
 				}
-				else if (currentToken.mType == POTENTIAL_FLOAT) {
-					currentToken.mType = UNKNOWN;
-					CloseToken(currentToken);
-				}
 				break;
 			case ':':
 			case '{':

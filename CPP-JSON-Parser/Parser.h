@@ -1,24 +1,20 @@
 #pragma once
 
-#include "Token.h"
+#include "Tokenizer.h"
 #include "JSONValue.h"
-
-#include <string>
-#include <iostream>
-#include <vector>
-#include <functional>
-#include <optional>
-#include <unordered_map>
 
 namespace JSONparser {
 	class Parser {
 	private:
-		int i = 0;
+		Tokenizer mTokenizer;
+		std::vector<JSONObject*> toDeleteObjects;
+		std::vector<JSONList*> toDeleteLists;
 	public:
 
-		JSONObject* Parse(std::vector<Token>& tokens);
+		~Parser();
 
-		std::vector<Token>::iterator mStart;
+		JSONObject Parse(std::string inputString);
+
 		std::vector<Token>::iterator mCurrent;
 		std::vector<Token>::iterator mEnd;
 
@@ -30,7 +26,7 @@ namespace JSONparser {
 		bool ExpectObject();
 		bool ExpectAssignment();
 		void ParseAssignment(JSONObject& currentObject);
-		JSONObject* ParseObject();
-		JSONList* ParseArray();
+		void ParseObject(JSONObject& currentObject);
+		void ParseArray(JSONList& currentArray);
 	};
 }

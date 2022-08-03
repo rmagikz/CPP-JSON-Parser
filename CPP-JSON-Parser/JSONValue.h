@@ -1,7 +1,6 @@
 #pragma once
 
 #include <unordered_map>
-#include <vector>
 #include <iostream>
 
 namespace JSONparser {
@@ -38,6 +37,8 @@ namespace JSONparser {
 
 		JSONValue operator[](std::string key);
 		JSONValue operator[](int index);
+
+		void Display();
 	};
 
 	using JSONList = std::vector<JSONValue>;

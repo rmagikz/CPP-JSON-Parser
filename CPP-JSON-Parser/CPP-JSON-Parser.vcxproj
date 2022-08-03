@@ -138,6 +138,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="SampleJSON.json" />
+    <None Include="SampleJSON2.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JSONValue.h" />

@@ -4,7 +4,6 @@ namespace JSONparser {
 	void JSONValue::SetObject(JSONObject* data) {
 		mDataType = OBJECT;
 		mData.JSONObject = data;
-		mCount = data->size();
 	}
 
 	void JSONValue::SetList(JSONList* data) {
@@ -51,5 +50,9 @@ namespace JSONparser {
 	JSONValue JSONValue::operator[](int index) {
 		if (mDataType == LIST) return (*mData.JSONList)[index];
 		throw std::logic_error("Unexpected type.");
+	}
+
+	void JSONValue::Display() {
+		std::cout << "MY TYPE IS " << mDataType << std::endl;
 	}
 }
