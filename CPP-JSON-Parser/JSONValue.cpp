@@ -17,14 +17,19 @@ namespace JSONparser {
 		mData.JSONString = data;
 	}
 
-	void JSONValue::SetFloat(float& data) {
+	void JSONValue::SetFloat(const float& data) {
 		mDataType = FLOAT;
 		mData.JSONFloat = data;
 	}
 
-	void JSONValue::SetInt(int& data) {
+	void JSONValue::SetInt(const int& data) {
 		mDataType = INT;
 		mData.JSONInt = data;
+	}
+
+	void JSONValue::SetBool(const bool& data) {
+		mDataType = BOOL;
+		mData.JSONBool = data;
 	}
 
 	std::string JSONValue::asString() {
@@ -39,6 +44,11 @@ namespace JSONparser {
 
 	int JSONValue::asInt() {
 		if (mDataType == INT) return mData.JSONInt;
+		throw std::logic_error("Unexpected type.");
+	}
+
+	bool JSONValue::asBool() {
+		if (mDataType == BOOL) return mData.JSONBool;
 		throw std::logic_error("Unexpected type.");
 	}
 

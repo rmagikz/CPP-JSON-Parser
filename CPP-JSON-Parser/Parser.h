@@ -9,23 +9,25 @@ namespace JSONparser {
 		Tokenizer mTokenizer;
 		std::vector<JSONObject*> toDeleteObjects;
 		std::vector<JSONList*> toDeleteLists;
+
+		std::vector<Token>::iterator mCurrent;
+		std::vector<Token>::iterator mEnd;
 	public:
 
 		~Parser();
 
 		JSONObject Parse(std::string inputString);
 
-		std::vector<Token>::iterator mCurrent;
-		std::vector<Token>::iterator mEnd;
-
-		bool ExpectOperator(const char* token);
-		bool ExpectString();
-		bool ExpectNumber();
 		bool ExpectKey();
 		bool ExpectArray();
 		bool ExpectObject();
-		bool ExpectAssignment();
-		void ParseAssignment(JSONObject& currentObject);
+		bool ExpectOperator(const char* token);
+		bool ExpectType(const TOKEN_TYPES& type);
+		bool ExpectAssignment(const TOKEN_TYPES& type);
+		void ParseInt(JSONObject& currentObject);
+		void ParseFloat(JSONObject& currentObject);
+		void ParseBool(JSONObject& currentObject);
+		void ParseString(JSONObject& currentObject);
 		void ParseObject(JSONObject& currentObject);
 		void ParseArray(JSONList& currentArray);
 	};

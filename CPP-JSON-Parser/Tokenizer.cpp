@@ -59,9 +59,38 @@ namespace JSONparser {
 				currentToken.mText.append(1, currChar);
 				CloseToken(currentToken);
 				break;
-			default:
-				if (currentToken.mType != STRING) break;
+			case 't':
 				if (currentToken.mType == STRING) {
+					currentToken.mText.append(1, currChar);
+				}
+				if (currentToken.mType != STRING) {
+					currentToken.mType = BOOL;
+					currentToken.mText.append(1, currChar);
+				}
+				break;
+			case 'f':
+				if (currentToken.mType == STRING) {
+					currentToken.mText.append(1, currChar);
+				}
+				if (currentToken.mType != STRING) {
+					currentToken.mType = BOOL;
+					currentToken.mText.append(1, currChar);
+				}
+				break;
+			case 'e':
+				if (currentToken.mType == STRING) {
+					currentToken.mText.append(1, currChar);
+				}
+				if (currentToken.mType == BOOL) {
+					currentToken.mText.append(1, currChar);
+					CloseToken(currentToken);
+				}
+				break;
+			default:
+				if (currentToken.mType == STRING) {
+					currentToken.mText.append(1, currChar);
+				}
+				if (currentToken.mType == BOOL) {
 					currentToken.mText.append(1, currChar);
 				}
 			}

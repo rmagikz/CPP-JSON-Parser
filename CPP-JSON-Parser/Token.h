@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 namespace JSONparser {
 	enum TOKEN_TYPES {
@@ -9,6 +10,7 @@ namespace JSONparser {
 		INT,
 		POTENTIAL_FLOAT,
 		FLOAT,
+		BOOL,
 		OPERATOR,
 	};
 
@@ -18,5 +20,7 @@ namespace JSONparser {
 		std::string mText;
 
 		Token();
+
+		void display();
 	};
 }

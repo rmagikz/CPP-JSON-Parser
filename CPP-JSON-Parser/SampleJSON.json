@@ -8,17 +8,17 @@
                 {
                     "ID": "10001",
                     "Status": "Available",
-                    "Last Counted": "Jul 27 2022"
+                    "Last Counted": true
                 },
                 {
                     "ID": "10002",
                     "Status": "Available",
-                    "Last Counted": "Jul 27 2022"
+                    "Last Counted": false
                 },
                 {
                     "ID": "10003",
                     "Status": "Available",
-                    "Last Counted": "Jul 27 2022"
+                    "Last Counted": false
                 }
             ]
         },
