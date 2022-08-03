@@ -57,6 +57,9 @@ namespace JSONparser {
 			else if (ExpectAssignment(BOOL)) {
 				ParseBool(currentObject);
 			}
+			else if (ExpectAssignment(NULL_VALUE)) {
+				ParseNULL(currentObject);
+			}
 			else {
 				++mCurrent;
 			}
@@ -112,6 +115,13 @@ namespace JSONparser {
 				currentArray.emplace_back(value);
 				mCurrent++;
 			}
+			else if (ExpectType(NULL_VALUE)) {
+				mCurrent--;
+				JSONValue value{};
+				value.SetNULL();
+				currentArray.emplace_back(value);
+				mCurrent++;
+			}
 			else {
 				++mCurrent;
 			}
@@ -154,6 +164,16 @@ namespace JSONparser {
 		mCurrent += 2;
 		JSONValue value{};
 		value.SetString(&(mCurrent->mText));
+		mCurrent++;
+		currentObject.emplace(std::make_pair(key, value));
+	}
+
+	void Parser::ParseNULL(JSONObject& currentObject) {
+		mCurrent -= 3;
+		std::string key = mCurrent->mText;
+		mCurrent += 2;
+		JSONValue value{};
+		value.SetNULL();
 		mCurrent++;
 		currentObject.emplace(std::make_pair(key, value));
 	}

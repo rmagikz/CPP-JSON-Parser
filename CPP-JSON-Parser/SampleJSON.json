@@ -8,17 +8,17 @@
                 {
                     "ID": "10001",
                     "Status": "Available",
-                    "Last Counted": true
+                    "Last Counted": null
                 },
                 {
                     "ID": "10002",
                     "Status": "Available",
-                    "Last Counted": false
+                    "Last Counted": null
                 },
                 {
                     "ID": "10003",
                     "Status": "Available",
-                    "Last Counted": false
+                    "Last Counted": null
                 }
             ]
         },

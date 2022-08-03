@@ -32,6 +32,11 @@ namespace JSONparser {
 		mData.JSONBool = data;
 	}
 
+	void JSONValue::SetNULL() {
+		mDataType = NULL_VALUE;
+		mData.JSONNULL = NULL;
+	}
+
 	std::string JSONValue::asString() {
 		if (mDataType == STRING) return *mData.JSONString;
 		throw std::logic_error("Unexpected type.");
@@ -49,6 +54,11 @@ namespace JSONparser {
 
 	bool JSONValue::asBool() {
 		if (mDataType == BOOL) return mData.JSONBool;
+		throw std::logic_error("Unexpected type.");
+	}
+
+	short JSONValue::asNULL() {
+		if (mDataType == NULL_VALUE) return mData.JSONNULL;
 		throw std::logic_error("Unexpected type.");
 	}
 

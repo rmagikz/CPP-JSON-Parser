@@ -45,7 +45,7 @@ namespace JSONparser {
 				}
 				break;
 			case ',':
-				if (currentToken.mType == INT || currentToken.mType == FLOAT) {
+				if (currentToken.mType == INT || currentToken.mType == FLOAT || currentToken.mType == NULL_VALUE) {
 					CloseToken(currentToken);
 				}
 				break;
@@ -86,11 +86,26 @@ namespace JSONparser {
 					CloseToken(currentToken);
 				}
 				break;
+			case 'n':
+				if (currentToken.mType != STRING) {
+					currentToken.mType = NULL_VALUE;
+					currentToken.mText.append(1, currChar);
+				}
+				else {
+					currentToken.mText.append(1, currChar);
+				}
+				break;
+			case '\n':
+				CloseToken(currentToken);
+				break;
 			default:
 				if (currentToken.mType == STRING) {
 					currentToken.mText.append(1, currChar);
 				}
 				if (currentToken.mType == BOOL) {
+					currentToken.mText.append(1, currChar);
+				}
+				if (currentToken.mType == NULL_VALUE) {
 					currentToken.mText.append(1, currChar);
 				}
 			}

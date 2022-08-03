@@ -12,6 +12,7 @@ namespace JSONparser {
 		FLOAT,
 		BOOL,
 		OPERATOR,
+		NULL_VALUE
 	};
 
 	class Token {

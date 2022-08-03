@@ -27,6 +27,7 @@ namespace JSONparser {
 		void ParseInt(JSONObject& currentObject);
 		void ParseFloat(JSONObject& currentObject);
 		void ParseBool(JSONObject& currentObject);
+		void ParseNULL(JSONObject& currentObject);
 		void ParseString(JSONObject& currentObject);
 		void ParseObject(JSONObject& currentObject);
 		void ParseArray(JSONList& currentArray);
