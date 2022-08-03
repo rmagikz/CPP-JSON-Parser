@@ -84,6 +84,34 @@ namespace JSONparser {
 				value.SetList(newArray);
 				currentArray.emplace_back(value);
 			}
+			else if (ExpectType(STRING)) {
+				mCurrent--;
+				JSONValue value{};
+				value.SetString(&(mCurrent->mText));
+				currentArray.emplace_back(value);
+				mCurrent++;
+			}
+			else if (ExpectType(INT)) {
+				mCurrent--;
+				JSONValue value{};
+				value.SetInt(std::stoi(mCurrent->mText));
+				currentArray.emplace_back(value);
+				mCurrent++;
+			}
+			else if (ExpectType(FLOAT)) {
+				mCurrent--;
+				JSONValue value{};
+				value.SetFloat(std::stof(mCurrent->mText));
+				currentArray.emplace_back(value);
+				mCurrent++;
+			}
+			else if (ExpectType(BOOL)) {
+				mCurrent--;
+				JSONValue value{};
+				value.SetBool(mCurrent->mText != "0");
+				currentArray.emplace_back(value);
+				mCurrent++;
+			}
 			else {
 				++mCurrent;
 			}

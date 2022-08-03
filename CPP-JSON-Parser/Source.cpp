@@ -18,6 +18,8 @@ int main() {
 
 	JSONObject data1 = parser.Parse(inputStream);
 
+	JSONValue int1 = data1["Inventory"][0]["Items"][0]["Last Counted"];
+
 	system("pause");
 
 	return 0;
