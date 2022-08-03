@@ -4,11 +4,13 @@ namespace JSONparser {
 	void JSONValue::SetObject(JSONObject* data) {
 		mDataType = OBJECT;
 		mData.JSONObject = data;
+		mCount = data->size();
 	}
 
 	void JSONValue::SetList(JSONList* data) {
 		mDataType = LIST;
 		mData.JSONList = data;
+		mCount = data->size();
 	}
 
 	void JSONValue::SetString(std::string* data) {
@@ -26,27 +28,17 @@ namespace JSONparser {
 		mData.JSONInt = data;
 	}
 
-	JSONObject JSONValue::GetObject() {
-		if (mDataType == OBJECT) return *mData.JSONObject;
-		throw std::logic_error("Unexpected type.");
-	}
-
-	JSONList JSONValue::GetList() {
-		if (mDataType == LIST) return *mData.JSONList;
-		throw std::logic_error("Unexpected type.");
-	}
-
-	std::string JSONValue::GetString() {
+	std::string JSONValue::asString() {
 		if (mDataType == STRING) return *mData.JSONString;
 		throw std::logic_error("Unexpected type.");
 	}
 
-	float JSONValue::GetFloat() {
+	float JSONValue::asFloat() {
 		if (mDataType == FLOAT) return mData.JSONFloat;
 		throw std::logic_error("Unexpected type.");
 	}
 
-	int JSONValue::GetInt() {
+	int JSONValue::asInt() {
 		if (mDataType == INT) return mData.JSONInt;
 		throw std::logic_error("Unexpected type.");
 	}

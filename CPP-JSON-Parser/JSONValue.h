@@ -24,6 +24,7 @@ namespace JSONparser {
 		} mData;
 
 		DATA_TYPES mDataType;
+		size_t mCount;
 
 		void SetObject(JSONObject* data);
 		void SetList(JSONList* data);
@@ -31,11 +32,9 @@ namespace JSONparser {
 		void SetFloat(float& data);
 		void SetInt(int& data);
 
-		JSONObject GetObject();
-		JSONList GetList();
-		std::string GetString();
-		float GetFloat();
-		int GetInt();
+		std::string asString();
+		float asFloat();
+		int asInt();
 
 		JSONValue operator[](std::string key);
 		JSONValue operator[](int index);

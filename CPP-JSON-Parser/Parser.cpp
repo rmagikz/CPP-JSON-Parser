@@ -2,7 +2,6 @@
 
 namespace JSONparser {
 	JSONObject* Parser::Parse(std::vector<Token>& tokens) {
-		mStart = tokens.begin();
 		mCurrent = tokens.begin();
 		mEnd = tokens.end();
 
@@ -10,7 +9,7 @@ namespace JSONparser {
 
 		if (ExpectObject()) {
 			JSONObject* object = ParseObject();
-			JSONValue value;
+			JSONValue value{};
 			value.SetObject(object);
 			finalObject->emplace(std::make_pair("root", value));
 		}
@@ -83,7 +82,7 @@ namespace JSONparser {
 		mCurrent -= 3;
 		std::string key = mCurrent->mText;
 		mCurrent += 2;
-		JSONValue value;
+		JSONValue value{};
 		value.SetString(&(mCurrent->mText));
 		mCurrent++;
 		currentObject.emplace(std::make_pair(key, value));
@@ -101,7 +100,7 @@ namespace JSONparser {
 				std::string key = mCurrent->mText;
 				mCurrent += 3;
 				JSONObject* newObject = ParseObject();
-				JSONValue value;
+				JSONValue value{};
 				value.SetObject(newObject);
 				currentObject->emplace(std::make_pair(key, value));
 				//delete(newObject);
@@ -111,7 +110,7 @@ namespace JSONparser {
 				std::string key = mCurrent->mText;
 				mCurrent += 3;
 				JSONList* newArray = ParseArray();
-				JSONValue value;
+				JSONValue value{};
 				value.SetList(newArray);
 				currentObject->emplace(std::make_pair(key, value));
 				//delete(newArray);
@@ -128,7 +127,6 @@ namespace JSONparser {
 
 	JSONList* Parser::ParseArray() {
 		JSONList* currentArray = new JSONList;
-		int bracketCount = 0;
 
 		while (mCurrent < mEnd) {
 			if (ExpectOperator("]")) {
@@ -136,14 +134,14 @@ namespace JSONparser {
 			}
 			else if (ExpectObject()) {
 				JSONObject* newObject = ParseObject();
-				JSONValue value;
+				JSONValue value{};
 				value.SetObject(newObject);
 				currentArray->emplace_back(value);
 				//delete(newObject);
 			}
 			else if (ExpectArray()) {
 				JSONList* newArray = ParseArray();
-				JSONValue value;
+				JSONValue value{};
 				value.SetList(newArray);
 				currentArray->emplace_back(value);
 				//delete(newArray);
