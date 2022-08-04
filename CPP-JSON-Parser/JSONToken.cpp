@@ -1,4 +1,4 @@
-#include "Token.h"
+#include "JSONToken.h"
 
 namespace JSONparser {
 	Token::Token() : mType(BLANK), mText("") {};

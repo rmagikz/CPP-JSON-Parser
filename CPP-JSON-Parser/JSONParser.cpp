@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "JSONParser.h"
 
 namespace JSONparser {
 	JSONObject Parser::Parse(std::string inputString) {

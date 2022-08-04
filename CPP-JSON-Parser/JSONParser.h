@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tokenizer.h"
+#include "JSONTokenizer.h"
 #include "JSONValue.h"
 
 namespace JSONparser {

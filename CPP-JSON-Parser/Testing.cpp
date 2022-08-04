@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "JSONParser.h"
 #include <fstream>
 
 using namespace JSONparser;
@@ -16,7 +16,14 @@ int main() {
 	}
 	inputFile.close();
 
-	JSONObject data1 = parser.Parse(inputStream);
+	//JSONObject data1 = parser.Parse(inputStream);
+
+	Tokenizer tokenizer;
+	std::vector<Token> tokens = tokenizer.Tokenize(inputStream);
+
+	for (int i = 0; i < tokens.size(); i++) {
+		tokens[i].display();
+	}
 
 	system("pause");
 

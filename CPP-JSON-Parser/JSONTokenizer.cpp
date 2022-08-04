@@ -1,4 +1,4 @@
-#include "Tokenizer.h"
+#include "JSONTokenizer.h"
 
 namespace JSONparser {
 	std::vector<Token> Tokenizer::Tokenize(const std::string& inputJson) {
@@ -98,6 +98,13 @@ namespace JSONparser {
 			case '\n':
 				CloseToken(currentToken);
 				break;
+			case ' ':
+				if (currentToken.mType == STRING) {
+					currentToken.mText.append(1, currChar);
+				}
+				else {
+					CloseToken(currentToken);
+				}
 			default:
 				if (currentToken.mType == STRING) {
 					currentToken.mText.append(1, currChar);
